@@ -91,7 +91,8 @@ def movies_with_directors_set(source)
   index = 0 
   while index < source.length do 
     director_name = source[index][:name]
-    array << movies_with_director_key(director_name, source)
+    movie_data = source[index][:movies]
+    array << movies_with_director_key(director_name, movie_data)
     index += 1
   end
   array
