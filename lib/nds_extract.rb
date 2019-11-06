@@ -1,9 +1,13 @@
 # Provided, don't edit
+$LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'directors_database'
+require 'pp'
 
 # A method we're giving you. This "flattens"  Arrays of Arrays so: [[1,2],
 # [3,4,5], [6]] => [1,2,3,4,5,6].
 
+#Takes an array of arrays and flattens it into an array
+#Loops through each cell and then adds it to a new array to return
 def flatten_a_o_a(aoa)
   result = []
   i = 0
@@ -20,6 +24,7 @@ def flatten_a_o_a(aoa)
   result
 end
 
+#Constructs and returns a hash containing movie data and a director
 def movie_with_director_name(director_name, movie_data)
   { 
     :title => movie_data[:title],
@@ -48,6 +53,16 @@ def movies_with_director_key(name, movies_collection)
   # Array of Hashes where each Hash represents a movie; however, they should all have a
   # :director_name key. This addition can be done by using the provided
   # movie_with_director_name method
+  
+  #dir_name = "Byron Poodle"
+  #test_set = [{:title => "TestA"}, {:title => "TestB"}]
+  
+  movies_collection.length.times do |index|
+    movies_collection[index][:director_name] = name
+  end
+  
+  return movies_collection
+  
 end
 
 
@@ -63,6 +78,25 @@ def gross_per_studio(collection)
   #
   # Hash whose keys are the studio names and whose values are the sum
   # total of all the worldwide_gross numbers for every movie in the input Hash
+  
+  #test_data = [
+  #{ :title => "Movie A", :studio => "Alpha Films", :worldwide_gross => 10 },
+  #{ :title => "Movie B", :studio => "Alpha Films", :worldwide_gross => 30 },
+  #{ :title => "Movie C", :studio => "Omega Films", :worldwide_gross => 30 }
+  #]
+  
+  studio_gross_hash = {}
+  
+  collection.length.times do |index|
+    if !studio_gross_hash[collection[index][:studio]]
+      studio_gross_hash[collection[index][:studio]] = collection[index][:worldwide_gross]
+    else
+      studio_gross_hash[collection[index][:studio]] += collection[index][:worldwide_gross]
+    end
+  end
+  
+  return studio_gross_hash
+  
 end
 
 def movies_with_directors_set(source)
@@ -76,6 +110,32 @@ def movies_with_directors_set(source)
   #
   # Array of Arrays containing all of a director's movies. Each movie will need
   # to have a :director_name key added to it.
+  
+  # { :name => "A", :movies => [{ :title => "Test" }] }
+  # becomes... [[{:title => "Test1", :director_name => "A"}],
+  #...          [{:title => "Test2", :director_name => "B"}],
+  #...          [{:title => "Test3", :director_name => "C"}]]
+  
+  movie_array = []
+  
+  source.length.times do |cycle_directors|
+    source[cycle_directors][:movies].length.times do |cycle_titles|
+      temp_array = []
+      temp_hash = {}
+      
+      temp_hash = movie_with_director_name(
+        source[cycle_directors][:name],
+        source[cycle_directors][:movies][cycle_titles]
+      )
+      
+      temp_array.push(temp_hash)
+      movie_array.push(temp_array)
+      
+    end
+  end
+  
+  return movie_array
+
 end
 
 # ----------------    End of Your Code Region --------------------
@@ -87,3 +147,6 @@ def studios_totals(nds)
   movies_with_director_names = flatten_a_o_a(a_o_a_movies_with_director_names)
   return gross_per_studio(movies_with_director_names)
 end
+
+
+pp flatten_a_o_a(movies_with_directors_set(directors_database))
