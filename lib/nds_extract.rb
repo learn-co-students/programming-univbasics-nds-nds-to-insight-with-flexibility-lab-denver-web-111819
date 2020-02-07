@@ -100,32 +100,38 @@ def gross_per_studio(collection)
 def movies_with_directors_set(source)
   
   counter = 0 
-  final_hash = {}
+  final_array = []
    
-while source.length> counter do
+  while source.length > counter do
   current_director_portfolio = movies_with_director_key(source[counter][:name], source[counter][:movies])
-       final_hash[:directors_name]  =  source[counter][:name]
-      counter2 = 0 
-       final_hash[:movies] = []
-     while source[counter].length > counter2 do
-
-      final_hash[:movies].push(source[counter2][:movies])
-    
-
-      counter2 += 1
+  final_array.push(current_director_portfolio)
+  counter += 1
   end
-    
-   # push the directors name as the first key in the Hash
-    # as the second key we'll push title key with movie vlaue 
-    # 
-    
-  counter += 1 
-
-  end
-binding.pry
-  
-    final_hash
+final_array
 end
+
+
+
+#       counter2 = 0 
+#       final_hash[:movies] = []
+#     while source[counter].length > counter2 do
+
+#       final_array[:movies].push(source[counter2][:movies])
+    
+#       counter2 += 1
+#   end
+    
+#   # push the directors name as the first key in the Hash
+#     # as the second key we'll push title key with movie vlaue 
+#     # 
+    
+#   counter += 1 
+
+#   end
+# binding.pry
+  
+#     final_hash
+# end
   
   
   # GOAL: For each director, find their :movies Array and stick it in a new Array
@@ -136,7 +142,7 @@ end
   #
   # RETURN:
   #
-  # Array of Hashes containing all of a director's movies. Each movie will need
+  # Array of Hashes containing all of a director's movies. Each hash will need
   # to have a :director_name key added to it.
 
 
